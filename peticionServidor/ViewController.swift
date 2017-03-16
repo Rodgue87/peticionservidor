@@ -16,34 +16,28 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func sincrono() {
         let numISBN = self.isbn.text!//"978-84-376-0494-7"
-        var urls = ""
-        if numISBN.characters.count == 0 {
-        urls = "https://openlibrary.org/"
-        } else {
-        urls = "https://openlibrary.org/api/books?jscmd=data&format=json&bibkeys=ISBN:\(numISBN)"}
+        let urls = "https://openlibrary.org/api/books?jscmd=data&format=json&bibkeys=ISBN:\(numISBN)"
         let url = NSURL(string: urls)
         let datos:NSData? = NSData(contentsOf: url! as URL)
+        
+        if (datos != nil) {
         let texto = NSString(data: datos! as Data, encoding: String.Encoding.utf8.rawValue)
         print(texto!)
         informacion.text = texto as String!
-    }
-    
-    func alerta() {
-        let errorInternet = informacion.text
-        if (errorInternet?.contains("error"))! {
-            let miAlerta = UIAlertController(title: "Alerta", message: "Error de internet", preferredStyle: UIAlertControllerStyle.alert)
-            let okAccion = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
-            
-            miAlerta.addAction(okAccion)
-            self.present(miAlerta, animated: true, completion: nil)
+        } else {
+            informacion.text = "No hay conexión a Internet"
+            }
         }
-        
-    }
+    
+    
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let color = UIColor.blue
         sincrono()
          isbn.delegate = self
+        view.backgroundColor = color
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -56,7 +50,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func textFieldDoneEditing(sender:UITextField){
         sender.resignFirstResponder()//desaparece el teclado
         sincrono()
-        alerta()
     }
     
     
