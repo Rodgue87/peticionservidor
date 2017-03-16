@@ -29,9 +29,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
         }
     
-    
-   
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         let color = UIColor.blue
